@@ -25,4 +25,13 @@ export class QuestionService {
 
     return newQuestion;
   }
+
+  async findQuestionById(id: number): Promise<Question> {
+    return this.questionRepository.findOne({
+      where: {
+        id,
+      },
+      relations: ['options', 'quiz'],
+    });
+  }
 }
