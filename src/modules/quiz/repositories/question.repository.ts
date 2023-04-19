@@ -1,4 +1,4 @@
 import { Repository } from 'typeorm';
-import { Question } from './question.entity';
+import { Question } from '../entities/question.entity';
 
 export class QuestionRepository extends Repository<Question> {}

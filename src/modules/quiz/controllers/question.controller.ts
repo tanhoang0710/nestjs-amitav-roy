@@ -1,4 +1,4 @@
-import { QuestionService } from './question.service';
+import { QuestionService } from '../services/question.service';
 import {
   Body,
   Controller,
@@ -6,9 +6,9 @@ import {
   UsePipes,
   ValidationPipe,
 } from '@nestjs/common';
-import { CreateQuestionDto } from './dto/CreateQuestion.dto';
-import { Question } from './question.entity';
-import { QuizService } from './quiz.service';
+import { CreateQuestionDto } from '../dto/CreateQuestion.dto';
+import { Question } from '../entities/question.entity';
+import { QuizService } from '../services/quiz.service';
 
 @Controller('question')
 export class QuestionController {
