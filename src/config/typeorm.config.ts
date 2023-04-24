@@ -9,4 +9,5 @@ export const typeOrmConfig: TypeOrmModuleOptions = {
   port: 3306,
   synchronize: true, // prod ko nen lam, vi se mat du lieu
   entities: [__dirname + '/../**/*.entity{.ts,.js}'],
+  logging: true,
 };
