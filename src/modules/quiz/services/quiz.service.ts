@@ -15,8 +15,8 @@ export class QuizService {
       .createQueryBuilder('q')
       .leftJoinAndSelect('q.questions', 'qt')
       .leftJoinAndSelect('qt.options', 'o')
-      .skip(1)
-      .take(1)
+      // .skip(1)
+      // .take(1)
       .getManyAndCount();
   }
 
@@ -25,7 +25,7 @@ export class QuizService {
       where: {
         id: id,
       },
-      relations: ['questions'],
+      relations: ['questions', 'questions.options'],
     });
     // return await this.quizRepository.findOneBy({
     //   id,
