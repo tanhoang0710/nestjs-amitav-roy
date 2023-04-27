@@ -8,14 +8,14 @@ export default class TypeOrmConfig {
   static getOrmConfig(configService: ConfigService): TypeOrmModuleOptions {
     return {
       type: 'mysql',
-      host: process.env.DB_HOST,
-      password: '123456',
-      username: 'root',
-      database: 'nestjs_amitav',
+      host: configService.get('DB_HOST'),
+      password: configService.get('DB_PASSWORD'),
+      username: configService.get('DB_USERNAME'),
+      database: configService.get('DB_NAME'),
       port: configService.get('DB_PORT'),
       synchronize: true, // prod ko nen lam, vi se mat du lieu
       entities: [__dirname + '/../**/*.entity{.ts,.js}'],
-      logging: true,
+      // logging: true,
     };
   }
 }
