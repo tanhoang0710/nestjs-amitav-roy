@@ -13,9 +13,11 @@ export default class TypeOrmConfig {
       username: configService.get('DB_USERNAME'),
       database: configService.get('DB_NAME'),
       port: configService.get('DB_PORT'),
-      synchronize: true, // prod ko nen lam, vi se mat du lieu
+      synchronize: false, // prod ko nen lam, vi se mat du lieu
       entities: [__dirname + '/../**/*.entity{.ts,.js}'],
       // logging: true,
+      charset: 'utf8mb4_unicode_ci',
+      migrations: [__dirname + '/../migrations/*{.ts,.js}'],
     };
   }
 }
@@ -25,4 +27,18 @@ export const typeOrmConfigAsync: TypeOrmModuleAsyncOptions = {
     configService: ConfigService,
   ): Promise<TypeOrmModuleOptions> => TypeOrmConfig.getOrmConfig(configService),
   inject: [ConfigService],
+};
+
+export const typeOrmConfig: TypeOrmModuleOptions = {
+  type: 'mysql',
+  host: process.env.DB_HOST,
+  password: process.env.DB_PASSWORD,
+  username: process.env.DB_USERNAME,
+  database: process.env.DB_NAME,
+  port: parseInt(process.env.DB_USERNAME, 10),
+  synchronize: true, // prod ko nen lam, vi se mat du lieu
+  entities: [__dirname + '/../**/*.entity{.ts,.js}'],
+  // logging: true,
+  charset: 'utf8mb4_unicode_ci',
+  migrations: [__dirname + '/../migrations/*{.ts,.js}'],
 };
