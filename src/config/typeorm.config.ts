@@ -13,7 +13,7 @@ export default class TypeOrmConfig {
       username: configService.get('DB_USERNAME'),
       database: configService.get('DB_NAME'),
       port: configService.get('DB_PORT'),
-      synchronize: false, // prod ko nen lam, vi se mat du lieu
+      synchronize: true, // prod ko nen lam, vi se mat du lieu
       entities: [__dirname + '/../**/*.entity{.ts,.js}'],
       // logging: true,
       charset: 'utf8mb4_unicode_ci',

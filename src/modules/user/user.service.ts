@@ -11,4 +11,12 @@ export class UserService {
     user.password = userRegister.password;
     return await user.save();
   }
+
+  async getUserByEmail(email: string): Promise<User | undefined> {
+    return await User.findOne({
+      where: {
+        email,
+      },
+    });
+  }
 }
