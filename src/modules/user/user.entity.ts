@@ -1,3 +1,4 @@
+import { ApiProperty } from '@nestjs/swagger';
 import * as bcrypt from 'bcrypt';
 import {
   BaseEntity,
@@ -12,6 +13,10 @@ import {
   name: 'users',
 })
 export class User extends BaseEntity {
+  @ApiProperty({
+    description: 'id',
+    example: 0,
+  })
   @PrimaryGeneratedColumn()
   id: number;
 
