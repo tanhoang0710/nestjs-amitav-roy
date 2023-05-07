@@ -17,7 +17,7 @@ export default class TypeOrmConfig {
       entities: [__dirname + '/../**/*.entity{.ts,.js}'],
       // logging: true,
       charset: 'utf8mb4_unicode_ci',
-      migrations: [__dirname + '/../migrations/*{.ts,.js}'],
+      migrations: [__dirname + '/../database/migrations/*{.ts,.js}'],
     };
   }
 }
@@ -40,5 +40,5 @@ export const typeOrmConfig: TypeOrmModuleOptions = {
   entities: [__dirname + '/../**/*.entity{.ts,.js}'],
   // logging: true,
   charset: 'utf8mb4_unicode_ci',
-  migrations: [__dirname + '/../migrations/*{.ts,.js}'],
+  migrations: [__dirname + '/../database/migrations/*{.ts,.js}'],
 };

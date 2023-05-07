@@ -8,6 +8,7 @@ import {
   Entity,
   PrimaryGeneratedColumn,
 } from 'typeorm';
+import { UserRoles } from './user.enum';
 
 @Entity({
   name: 'users',
@@ -30,6 +31,13 @@ export class User extends BaseEntity {
 
   @Column()
   password: string;
+
+  @Column({
+    type: 'enum',
+    enum: UserRoles,
+    default: UserRoles.MEMBER,
+  })
+  role: UserRoles;
 
   @CreateDateColumn()
   createdAt: Date;
