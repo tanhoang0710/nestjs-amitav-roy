@@ -19,4 +19,12 @@ export class UserService {
       },
     });
   }
+
+  async getUserById(id: number): Promise<User | undefined> {
+    return await User.findOne({
+      where: {
+        id,
+      },
+    });
+  }
 }

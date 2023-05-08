@@ -8,6 +8,7 @@ import {
   ParseIntPipe,
   Post,
   Query,
+  UseGuards,
   UsePipes,
   ValidationPipe,
 } from '@nestjs/common';
@@ -16,9 +17,12 @@ import { CreateQuiz } from '../dto/CreateQuiz.dto';
 import { Quiz } from '../entities/quiz.entity';
 import { ApiOkResponse, ApiTags } from '@nestjs/swagger';
 import { IPaginationOptions, Pagination } from 'nestjs-typeorm-paginate';
+import { AdminRoleGuard } from '../../../modules/auth/admin-role.guard';
+import { JwtAuthGuard } from '../../auth/jwt-auth.guard';
 
 @ApiTags('Quiz')
 @Controller('quiz')
+@UseGuards(JwtAuthGuard)
 export class QuizController {
   constructor(private readonly quizService: QuizService) {}
 
@@ -43,6 +47,7 @@ export class QuizController {
   @Post('/create')
   @HttpCode(200)
   @UsePipes(ValidationPipe)
+  @UseGuards(AdminRoleGuard)
   async createQuiz(@Body() quizData: CreateQuiz) {
     return await this.quizService.createNewQuiz(quizData);
   }

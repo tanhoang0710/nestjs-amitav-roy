@@ -1,3 +1,4 @@
+import { UserRoles } from '../../modules/user/user.enum';
 import { User } from '../../modules/user/user.entity';
 import { Connection, getManager } from 'typeorm';
 import { Factory, Seeder } from 'typeorm-seeding';
@@ -10,6 +11,7 @@ export class UserCreateSeed implements Seeder {
       name: 'tanhun',
       email: 'tanhoang0710@gmai.com',
       password: 'Password@123',
+      role: UserRoles.ADMIN,
     });
 
     await factory(User)().createMany(20);
