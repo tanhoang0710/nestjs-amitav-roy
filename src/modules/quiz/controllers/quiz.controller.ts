@@ -17,8 +17,9 @@ import { CreateQuiz } from '../dto/CreateQuiz.dto';
 import { Quiz } from '../entities/quiz.entity';
 import { ApiOkResponse, ApiTags } from '@nestjs/swagger';
 import { IPaginationOptions, Pagination } from 'nestjs-typeorm-paginate';
-import { AdminRoleGuard } from '../../../modules/auth/admin-role.guard';
 import { JwtAuthGuard } from '../../auth/jwt-auth.guard';
+import { RoleGuard } from '../../../modules/auth/roles.guard';
+import { Roles } from '../../../modules/auth/roles.decorator';
 
 @ApiTags('Quiz')
 @Controller('quiz')
@@ -47,7 +48,8 @@ export class QuizController {
   @Post('/create')
   @HttpCode(200)
   @UsePipes(ValidationPipe)
-  @UseGuards(AdminRoleGuard)
+  @UseGuards(RoleGuard)
+  @Roles('admin', 'member')
   async createQuiz(@Body() quizData: CreateQuiz) {
     return await this.quizService.createNewQuiz(quizData);
   }
