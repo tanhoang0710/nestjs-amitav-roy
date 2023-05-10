@@ -1,0 +1,318 @@
+﻿Buổi 1:
+- File bat là file thực hiện 1 lô lệnh
+1.X-Window
+2.CDN – Content Delivery Network
+3.Shell command
+4.Docker
+
+Buổi 3: Lập lịch CPU
+1. Khái niệm
+- Nhằm lựa chọn giữa các tiến trình/luồng đã sẵn sàng chạy để cấp phát CPU cho nó
+- Hoạt động khi
+  . Ngắt phần cứng/ trường hợp ngoại trừ của phần mềm
+  . Gọi hàm hệ thống
+- Các phương pháp lập lịch
+  . Không cho phép dừng: Bộ lập lịch hoạt động khi tiến trình đang chạy kết thúc hoặc ko thể chạy tiếp
+  . Cho phép dừng: Bộ lập lịch hoạt động bất cứ khi nào có thể: MacOS, Window 95 trở về sau
+- Các tiêu chí của bộ lập lịch
+  . Tối đa thời gian sử dụng CPU
+  . Tối đa hóa số lượng tiến trình hoàn thành trong 1 đơn vị thời gian
+  . Giảm thiểu thời gian quay vòng - thời gian để thưc thi 1 tiến trình
+  . Giảm thiều thời gian phản hồi khi có yêu cầu
+  . Giảm thiểu thời gian chờ đợi CPU trong hàng đợi sẵn sàng
+  
+2. Các thuật toán lập lịch
+- FCFS (First come first served)
+  . Tiến trình nào yêu cầu sử dụng CPU trước sẽ được thực hiện trước
+  . Ưu điểm: thuật toán đơn giản nhất
+  . Nhược điểm: hiệu quả của thuật toán phụ thuộc vào thứ tự của tiến trình trong hàng chờ, vì thứ tự này ảnh hưởng rất lớn đến thời gian chờ trung bình
+  
+- SJF (Shortest Job First)
+  . Mỗi tiến trình có thêm tham số độ dài của phiên sử dụng CPU tiếp theo (t_nextburst)
+  . Tiến trình có t_nextburst thấp nhất sẽ được lập lịch sử dụng CPU trước, nếu bằng nhau thì sẽ thực hiện theo FCFS
+  . Khó khăn của thuật toán SJF là dự đoán độ dài của phiên sử dụng CPU tiếp theo
+  . Thường ko đc sd cho bộ lập lịch ngắn hạn
+
+- Lập lịch ưu tiên
+  . Mỗi tiến trình có một số hiệu ưu tiên
+  . Cấp phát CPU cho tiến trình có ưu tiên cao nhất/bé nhất
+  . SJF là trường hợp đặc biệt của lập lịch ưu tiên với số hiệu ưu tiên là nghịch đảo của độ dài phiên sử dụng CPU tiếp theo
+
+- Lập lịch Round Robin (RR)
+  . Áp dụng cho hệ thống chia sẻ thời gian
+  . Mỗi tiến trình chiếm CPU trong 1 đơn vị thời gian(time quantum q~10-100 msec). Sau khoảng thời gian này, tiến trình bị dừng lại, xếp hàng chờ ở cuối hàng đợi sẵn sàng
+  . Nếu có n tiến trình trong hàng đợi sẵn sàng thì ko tiến trình nào phải đợi lâu hơn (n-1)q đơn vị thời gian
+  . Nếu q lớn: giống lập lịch FCFS
+  . Nếu q nhỏ: mất nhiều thời gian chuyển trạng thái
+  
+  
+- Lập lịch hàng đợi đa cấp
+  . Hàng đợi sẵn sàng đc chia ra nhiều hàng đợi. VD: hàng đợi trước, hàng đợi sau
+  . Mỗi tiến trình chỉ ở 1 hàng đợi được sắp xếp từ trước
+  . Mỗi hàng đợi có riêng 1 thuật toán lập lịch
+  . Cần có thuật toán lập lịch giữa các hàng đợi
+    . Lập lịch ưu tiên: VD: chạy các tiến trình ở hàng đợi trước rồi đến các tiến trình ở hành đợi sau
+    . Mỗi hàng đợi chiếm giữ CPU trong 1 khoảng thời gian nhất định
+  
+  
+- Lập lịch hàng đợi phản hồi đa cấp
+  . Tiến trình di chuyển giữa các hàng đợi
+  . Sử dụng các tham số sau:
+    . Số lượng hàng đợi
+    . Thuật toán cho mỗi hàng đợi
+    . Phương thức chuyển tiến trình lên hàng đợi có ưu tiên cao hơn và ngược lại
+    . Phương thức lựa chọn hàng đợi cho một tiến trình khi có yêu cầu
+
+4. Các phương pháp đánh giá thuật toán lập lịch
+ - Mô hình xác định:
+   . Dựa vào trình tự của các tiến trình, thời gian chạy CPU, thiết bị vào ra được giả định trước
+     . Thường dựa vào trung bình hàm lũy thừa
+     . Tính thời gian hoàn thành, thời gian sử dụng, thời gian chờ trung bình
+ - Định luật Little
+   . n = độ dài trung bình của hàng đợi
+   . W = thời gian chờ trung bình trong hàng đợi
+   . Lamda = tốc độ trung bình đến hàng đợi
+   . Định luật Little: ở trạng thái cân bằng, số tiến trình đến hàng đợi bằng số tiến trình rời hàng đợi: n = Lamda . W
+ - Phương pháp mô phỏng:
+   . Sử dụng mô hình đc lt cho hệ máy tính
+   . Tham số đồng hồ thời gian
+   . Thu thập số liệu của thuật toán lập lịch
+   . Dữ liệu dùng cho mô phỏng đc thu thập qua
+   - Ưu điểm: đánh giá chính xác
+   - Nhược điểm: Giá thành cao, Môi trường sử dụng thuật toán có thể thay đổi
+   
+   
+5. Đồng bộ hóa tiến trình
+5.1 Bài toán khu vực quan trọng
+Tương tranh và đồng bộ
+- Tình huống xuất hiện khi nhiều tiến trình cùng thao tác trên dữ liệu chung và kết quả các thao tác đó phụ thuộc bào thứ tự thực hiện của các tiến trình trên dữ liệu chung gọi là tình huống tương tranh(race condition)
+- Để tránh các tình huống trương tranh, các tiến trình cần đc đồng bộ theo một phương thức nào đó => Vấn đề nghiên cứu: Đồng bộ hóa các tiến trình
+
+Bài toán khu vực quan trọng
+- Có n tiến trình trong hệ thống {p0, p1, p2, ..., pn}
+- Mỗi tiến trình có 1 đoạn mã truy cập vào khu vực quan trọng (critical section - cs)
+  . Để thay đổi các biến toàn cục, cập nhật, viết tệp, ...
+  . Khi 1 tiến trình thực thi khu vực quan trọng, ko 1 tiến trình nào khác đc thực thi khu vực quan trọng
+- Mỗi tiến trình phải yêu cầu quyền truy cập vào khu vực quan trọng
+- Cấu trúc chung của 1 tiến trình khi sử dụng khu vực quan trọng - psudo-code
+  do {
+  	---- entry section ----
+  		critical section
+  	---- exit section ----
+  		remainder section
+  } while (true)
+
+Các điều kiện cần đảm bảo để giải quyết bài toán khu vực quan trọng
+- Loại trừ lẫn nhau (Mutual Exclusion): Khi mỗi tiến trình Pi đang thực thi khu vực quan trọng CSi thì ko 1 tiến trình nào khác đc thực thi khu vực quan trọng
+- Tiến triển (Progress): Nếu ko có tiến trình nào đang thực thi khu vực quan trọng, và tồn tại 1 số tiến trình muốn thực thi khu vực quan trọng thì việc lựa chọn tiến trình tiếp theo thực thi khu vực quan trọng ko thể bị trì hoãn vô thời hạn
+- Chờ đợi có giới hạn (Bounded Waiting): sau khi 1 tiến trình Pi có yêu cầu vào CSi và trước khi yêu cầu đó đc chấp nhận, số lần các tiến trình Pj (j != i) đc phép thực hiện CSj phải có giới hạn
+
+5.2 Giải pháp Peterson
+- Hai tiến trình chia sẻ 2 tham số
+  int turn;
+  bool flag[2]
+- Tham số turn chỉ tiến trình đến lượt vào CS
+- flag[i] = true chỉ tiến trình Pi đã sẵn sàng vào CS
+- Cấu trúc của tiến trình Pi
+
+do {
+  flag[i] = true
+  turn = j;
+  while(flag[j] && turn == j); // wait to enter CS
+  
+  critical section
+  
+  flag[i] = false;
+  
+  remainder section
+}while(true)
+
+
+
+5.3 Đồng bộ hóa phần cứng
+- Giải pháp cho vấn đề khu vực quan trong thông qua Khóa
+- Đồng bộ hóa phần cứng trong hệ đơn vi xử lý
+  . Vô hiệu hóa hoạt động của các ngắt khi đang cập nhật các biến chung
+  . VD:
+  boolean test and set(boolean *target) {
+  	boolean rv = *target;
+  	*target = true;
+  	return rv;
+  }
+  . Đoạn mã đảm bảo tính loại trừ lẫn nhau
+  do {
+  	while(test and set(&lock)); //do nothing
+  	// critical section
+  	
+  	lock = false
+  	// remainder section
+  }
+
+- Đồng bộ hóa phần cứng trong hệ đa vi xử lý
+  . Sử dụng lệnh phần cứng ko cho phép ngắt 
+  
+ 
+5.4 Semaphore
+- Khái niệm: Semaphore S - biến số nguyên
+- 2 hàm chuẩn thay đổi giá trị của S: wait() và signal()
+- 2 hàm nguyên tử
+- Tại mỗi thời điểm, nhiều nhắt 1 tiến trình đc thay đổi giá trị của S
+
+- Các kiểu Semaphore
+  . Semaphore đếm: giá trị biến tự nhiên trong 1 miền giới hạn
+  . Semaphore nhị phân: 0 hoặc 1
+    . còn gọi là Khóa mutex
+    . đảm bảo tính loại trừ lẫn nhau
+
+- Triển khai Semaphore nhằm tránh tình trạng bận rộn chờ đợi
+  . Mỗi semaphore có 1 hàng đợi
+  . Mỗi lượt vào hàng đợi có 2 dữ liệu
+    Giá trị tự nhiên
+    Con trỏ đến bản ghi tiếp theo trong danh sách
+  . 2 hàm
+    block(): đưa tiến trình gọi hàm này vào hàng đợi tích hợp
+    wakeup(): loại bỏ 1 trong các tiến trình ở hàng đợi và đưa nó vào hàng đợi sẵn sàng
+
+
+
+5.5 Một số bài toán đồng bộ hóa cơ bản
+
+Bài toán vùng đệm có giới hạn
+
+- N vùng đệm, mỗi vùng đệm chứa đc 1 dữ liệu
+
+- Khởi tạo semaphore mutex = 1 // Đảm bảo tính loại trừ lẫn nhau
+
+- Khởi tạo semaphore full = 0 // Đếm số vùng đệm chứa dữ liệu
+
+- Khởi tạo semaphore empty = N // Đếm số vùng đệm còn trống
+
+Bài toán người đọc - Người viết
++ Một tập dữ liệu đc chia sẻ đồng thời bởi 1 số tiến trình
+- Người đọc: chỉ đọc dữ liệu, ko cập nhật thay đổi dữ liệu
+- Người viết: Đọc và viết dữ liệu
+
++ Cho phép nhiều người cùng đọc dữ liệu 1 lúc
+- Chỉ 1 người viết được thay đổi dữ liệu
+
++ Dữ liệu chung
+- Tập dữ liệu
+. Khởi tạo semaphore mutex = 1 // Đảm bảo tính loại trừ lẫn nhau khi cập nhật readcount
+. Khởi tạo semaphore wrt bằng 1 // Đảm bảo tính loại trừ lẫn nhau của người viết
+. Khởi tạo semaphore biến tự nhiên readcount = 0 // Đếm số tiến trình đang đọc dữ liệu
+
+
+Bài toán bữa ăn nhà triết học
++ Dữ liệu chung
+- Bát cơm (Tập dữ liệu)
+- Khởi tạo semaphore đũa [5] bằng 1
+- Tiến trình cho nhà triết học i:
+
+do {
+	wait(đũa[i])
+	wait(đũa[(i + 1) % 5])
+	// eat
+	signal(đũa[i])
+	signal(đũa[(i + 1) % 5])
+	// think
+} while (true)
+
+- Có thể xảy ra tình trạng bế tắc khi tất cả các nhà hiền triết đều đói và cùng lấy đũa cùng lúc
+- Khắc phục:
+. Cho phép nhiều nhất 4 nhà triết học ngồi trên cùng 1 bàn ăn
+. Cho phép nhà triết học lấy đũa khi cả 2 chiếc đũa ở trạng thái sẵn sàng
+. Nhà triết học có số hiệu lẻ lấy đũa bên trái, rồi bên phải. Ngược lại đối với nhà triết học có số hiệu chẵn
+
+- Yêu cầu: Chọn 1 giải pháp khắc phục tình trạng bế tắc, viết lại tiến trình cho nhà triết học i
+
+
+
+5.6 Một số vấn đề với semaphore
+- Sử dụng sai hàm
+ . signal (mutex) ... wait (mutex) => phải là wait(mutex) ... signal(mutex)
+ . wait(mutex) ... wait (mutex)
+ . Bỏ qua wait (mutex) hoặc signal(mutex) hoặc cả 2
+ 
+- Bế tắc
+. 2 tiến trình hoặc nhiều hơn đang đợi mãi cho 1 sự kiệ đc tạo ra do 1 trong các tiến trình đang đợi này
+VD: 2 semaphores S và Q được khởi tạo bằng 1
+
+- Nạn đói
+. Một tiến trình bị ngăn chặn mãi mãi trong 1 semaphore
+
+
+
+
+
+
+6. Bế tắc
+1. Bài toán bế tắc
+- Một tập hợp tiến trình, trong đó mỗi tiến trình giữ 1 tài nguyên và đợi 1 tài nguyên đang bị chiếm giữ bởi 1 tiến trình khác trong tập hợp này
+- VD: 2 semaphore A và B đc khởi tạo bằng 1
+. P0: wait(A); 	wait(B)
+. P1: wait(B); 	wait(A)
+
+- Bài toán qua cầu:
+. Chỉ cho phép 1 làn xe qua cầu
+. Khi bế tắc xảy ra, 1 số xe phải lùi lại
+. Có khả năng xảy ra nạn đói
+
+2. Các điều kiện cần để có bế tắc
+Bế tắc xảy ra khi 4 điều kiện sau đồng thời xảy ra:
+. Loại trừ lẫn nhau: mỗi thời điểm, chỉ 1 tiến trình đc sd tài nguyên
+. Giữ và đợi: tiến trình chiếm hữu 1 tài nguyên và chờ 1 tài nguyên khác đang chiếm giữ bởi tiến trình khác
+. Không dừng: tài nguyên chỉ đc giải phóng bởi tiến trình chiếm giữ nó sau khi kết thúc nhiệm vụ
+. Chờ đợi vòng tròn: Có 1 tập các tiến trình {P0, P1, P2, ..., Pn} trong đó tiến trình Pi đang đợi 1 tài nguyên bị chiếm bởi tiến trình P(i+1)%(n+1)
+
+
+3. Đồ thị phân phối tài nguyên
+V: Tập các đỉnh
+. P = {P1, P2, ..., Pn} tập các tiến trình trong hệ thống
+. R = {R1, R2, ..., Rm} tập các nguồn tài nguyên trong hệ thống
+
+E: Tập các cạnh
+. Cạnh yêu cầu: Pi -> Rj
+. Cạnh cấp phát: Rj -> Pi
+
+Tiến trình  
+
+Tài nguyên gồm 4 đơn vị 
+
+
+
+Pi yêu cầu 1 đơn vị của tài nguyên Rj 
+
+
+
+Pi chiếm giữ 1 đơn vị của tài nguyên Rj
+
+
+
+
+
+
+
+
+
+
+	
+
+Các phương pháp xử lý khi có bế tắc:
+- SD các pthức phòng hoặc tránh bế tắc nhằm đảm bảo hệ thống không bao giờ vào trạng thái bế tắc
+- Cho phép hệ thống vào trạng thái bế tắc, phát hiện và khôi phục lại
+- Bỏ qua và giả định rằng bế tắc ko bao giờ xảy ra (hầu hết các HĐH lựa chọn cách này, bao gồm cả Linux và Windows)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
